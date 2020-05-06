@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Firenda</string>
+
+    <string name="hint_word">Medicine Name...</string>
+    <string name="button_save">Save</string>
+    <string name="empty_not_saved">Medicine not saved\!</string>
 </resources>
