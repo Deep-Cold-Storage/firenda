@@ -12,11 +12,17 @@ interface MedicineDao {
     @Query("SELECT * FROM medicines ORDER BY hour")
     fun getAllMedicines(): LiveData<List<Medicine>>
 
+    @Query("SELECT * FROM medicines WHERE id = :id")
+    fun getMedicineById(id: Int): LiveData<List<Medicine>>
+
     @Insert()
     fun insertMedicine(medicine: Medicine)
 
-    @Query("DELETE FROM medicines WHERE id = :position")
-    suspend fun deleteMedicineById(position: Int)
+    @Query("DELETE FROM medicines WHERE id = :id")
+    suspend fun deleteMedicineById(id: Int)
+
+    @Query("UPDATE medicines SET takenToday = NOT takenToday WHERE id = :id")
+    suspend fun toggleMedicineById(id: Int)
 
     @Update()
     fun updateMedicine(medicine: Medicine)

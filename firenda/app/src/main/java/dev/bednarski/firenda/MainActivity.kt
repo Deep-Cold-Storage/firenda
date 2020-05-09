@@ -20,13 +20,22 @@ class MainActivity : AppCompatActivity() {
 
         val medicineViewModel = ViewModelProvider(this).get(MedicineViewModel::class.java)
 
-        val itemOnClick: (Int) -> Unit = { id ->
+        val deleteOnClick: (Int) -> Unit = { id ->
             medicineViewModel.delete(id)
-            Toast.makeText(this, "$id. item clicked.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "ID: $id. item deleted!", Toast.LENGTH_SHORT).show()
+        }
+
+        val toggleOnClick: (Int) -> Unit = { id ->
+            medicineViewModel.toggle(id)
+            Toast.makeText(this, "ID: $id item toggled!", Toast.LENGTH_SHORT).show()
         }
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
-        val adapter = MedicineListAdapter(this, itemClickListener = itemOnClick)
+        val adapter = MedicineListAdapter(
+            this,
+            deleteClickListener = deleteOnClick,
+            toggleClickListener = toggleOnClick
+        )
 
 
 
@@ -59,7 +68,14 @@ class MainActivity : AppCompatActivity() {
             val timeMinute = data!!.getStringExtra("MEDICINE_MINUTE")
 
             val medicine =
-                Medicine(id = 0, name = name, dosage = dosage, hour = timeHour, minute = timeMinute)
+                Medicine(
+                    id = 0,
+                    name = name,
+                    dosage = dosage,
+                    hour = timeHour,
+                    minute = timeMinute,
+                    takenToday = false
+                )
 
             val medicineViewModel = ViewModelProvider(this).get(MedicineViewModel::class.java)
             medicineViewModel.insert(medicine)

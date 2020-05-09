@@ -51,7 +51,7 @@
             android:text="Delete Medicine" />
 
         <ToggleButton
-            android:id="@+id/checkBox"
+            android:id="@+id/buttonToggleStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
@@ -60,8 +60,8 @@
             android:background="#FFFFFF"
             android:checked="false"
             android:text="ToggleButton"
-            android:textOff="Taken"
-            android:textOn="Not Taken" />
+            android:textOff="Not Taken"
+            android:textOn="Taken" />
 
     </LinearLayout>
 

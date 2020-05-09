@@ -6,11 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.ToggleButton
 import androidx.recyclerview.widget.RecyclerView
 
 
 class MedicineListAdapter internal constructor(
-    context: Context, private val itemClickListener: (Int) -> Unit
+    context: Context,
+    private val deleteClickListener: (Int) -> Unit,
+    private val toggleClickListener: (Int) -> Unit
 ) : RecyclerView.Adapter<MedicineListAdapter.MedicineViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -25,6 +28,7 @@ class MedicineListAdapter internal constructor(
         val medicineItemTime: TextView = itemView.findViewById(R.id.textTime)
 
         val medicineDeleteButton: Button = itemView.findViewById(R.id.buttonDelete)
+        val medicineStatusButton: ToggleButton = itemView.findViewById(R.id.buttonToggleStatus)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MedicineViewHolder {
@@ -37,8 +41,11 @@ class MedicineListAdapter internal constructor(
         holder.medicineItemName.text = current.name
         holder.medicineItemTime.text = "Every day at " + current.hour + ":" + current.minute
         holder.medicineItemDosage.text = "Dosage: " + current.dosage
+        holder.medicineStatusButton.setChecked(current.takenToday)
 
-        holder.medicineDeleteButton.setOnClickListener { itemClickListener(current.id) }
+
+        holder.medicineDeleteButton.setOnClickListener { deleteClickListener(current.id) }
+        holder.medicineStatusButton.setOnClickListener { toggleClickListener(current.id) }
 
     }
 
