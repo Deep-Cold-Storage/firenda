@@ -41,11 +41,19 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == newMedicineActivityRequestCode && resultCode == Activity.RESULT_OK) {
-            data!!.getStringExtra(NewMedicineActivity.EXTRA_REPLY).let {
-                val medicine = Medicine(id = 0, name = it)
-                val medicineViewModel = ViewModelProvider(this).get(MedicineViewModel::class.java)
-                medicineViewModel.insert(medicine)
-            }
+
+            val name = data!!.getStringExtra("MEDICINE_NAME")
+            val dosage = data!!.getStringExtra("MEDICINE_DOSAGE")
+
+            val timeHour = data!!.getStringExtra("MEDICINE_HOUR")
+            val timeMinute = data!!.getStringExtra("MEDICINE_MINUTE")
+
+            val medicine =
+                Medicine(id = 0, name = name, dosage = dosage, hour = timeHour, minute = timeMinute)
+
+            val medicineViewModel = ViewModelProvider(this).get(MedicineViewModel::class.java)
+            medicineViewModel.insert(medicine)
+
         } else {
             Toast.makeText(
                 applicationContext,
