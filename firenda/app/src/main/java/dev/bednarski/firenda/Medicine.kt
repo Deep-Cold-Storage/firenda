@@ -13,5 +13,6 @@ class Medicine(
     @ColumnInfo(name = "dosage") val dosage: String,
 
     @ColumnInfo(name = "hour") val hour: String,
-    @ColumnInfo(name = "minute") val minute: String
+    @ColumnInfo(name = "minute") val minute: String,
+    @ColumnInfo(name = "takenToday") val takenToday: Boolean
 )

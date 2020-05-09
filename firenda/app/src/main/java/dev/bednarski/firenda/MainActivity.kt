@@ -18,16 +18,26 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val medicineViewModel = ViewModelProvider(this).get(MedicineViewModel::class.java)
+
+        val itemOnClick: (Int) -> Unit = { id ->
+            medicineViewModel.delete(id)
+            Toast.makeText(this, "$id. item clicked.", Toast.LENGTH_SHORT).show()
+        }
+
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
-        val adapter = MedicineListAdapter(this)
+        val adapter = MedicineListAdapter(this, itemClickListener = itemOnClick)
+
+
+
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val medicineViewModel = ViewModelProvider(this).get(MedicineViewModel::class.java)
+
         medicineViewModel.allMedicines.observe(this, Observer { medicines ->
 
             // Update the cached copy of the words in the adapter.
-            medicines?.let { adapter.setWords(it) }
+            medicines?.let { adapter.setMedicines(it) }
         })
 
         val fab = findViewById<FloatingActionButton>(R.id.fab)

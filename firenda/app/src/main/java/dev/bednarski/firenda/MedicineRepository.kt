@@ -12,4 +12,8 @@ class MedicineRepository(private val MedicineDao: MedicineDao) {
     suspend fun insert(medicine: Medicine) {
         MedicineDao.insertMedicine(medicine)
     }
+
+    suspend fun delete(position: Int) {
+        MedicineDao.deleteMedicineById(position)
+    }
 }

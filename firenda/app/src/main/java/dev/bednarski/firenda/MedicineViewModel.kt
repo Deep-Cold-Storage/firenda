@@ -27,4 +27,9 @@ class MedicineViewModel(application: Application) : AndroidViewModel(application
     fun insert(medicine: Medicine) = viewModelScope.launch(Dispatchers.IO) {
         repository.insert(medicine)
     }
+
+    // Launching a new coroutine to insert the data in a non-blocking way
+    fun delete(position: Int) = viewModelScope.launch(Dispatchers.IO) {
+        repository.delete(position)
+    }
 }
