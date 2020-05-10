@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         val medicineViewModel = ViewModelProvider(this).get(MedicineViewModel::class.java)
 
         // Reset DB logic
-        val sharedPref: SharedPreferences = getSharedPreferences("FIRENDA_LAST_OPENED", 0)
+        val sharedPref: SharedPreferences = getSharedPreferences("FIRENDA_PREFERENCES", 0)
 
         val currentDate: String = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
         if (sharedPref.getString("FIRENDA_LAST_OPENED", "0") != currentDate) {
@@ -48,6 +48,7 @@ class MainActivity : AppCompatActivity() {
 
             medicineViewModel.reset()
         }
+
 
         val deleteOnClick: (Int) -> Unit = { id ->
             medicineViewModel.delete(id)
@@ -89,6 +90,46 @@ class MainActivity : AppCompatActivity() {
 
             // Update the cached copy of the words in the adapter.
             medicines?.let { adapter.setMedicines(it) }
+
+            // Fix alarms after reboot
+            if (sharedPref.getBoolean("FIRENDA_BOOT", false)) {
+
+                val editor = sharedPref.edit()
+                editor.putBoolean("FIRENDA_BOOT", false)
+                editor.apply()
+                Log.e("BOOT", "Fix boot flag to false!")
+
+
+                for (medicine in medicines) {
+                    // Set up notification
+
+                    val intent = Intent(this, Receiver::class.java)
+                    intent.putExtra("NOTIFICATION_MEDICINE_NAME", medicine.name)
+                    intent.putExtra("NOTIFICATION_MEDICINE_UNIT", medicine.dosageUnit)
+
+                    val pendingIntent = PendingIntent.getBroadcast(
+                        this,
+                        medicine.id.toInt(),
+                        intent,
+                        PendingIntent.FLAG_CANCEL_CURRENT
+                    )
+
+                    val calendar: Calendar = Calendar.getInstance()
+
+                    calendar.set(Calendar.HOUR_OF_DAY, medicine.hour.toInt());
+                    calendar.set(Calendar.MINUTE, medicine.minute.toInt());
+
+                    alarmManager.setRepeating(
+                        AlarmManager.RTC_WAKEUP,
+                        calendar.timeInMillis,
+                        AlarmManager.INTERVAL_DAY,
+                        pendingIntent
+                    )
+
+                    Log.e("BOOTFIX", "Fix notification for " + medicine.name)
+                    Log.e("NOTIFICATION", "Notification set! " + calendar)
+                }
+            }
         })
 
         val fab = findViewById<FloatingActionButton>(R.id.fab)
@@ -171,7 +212,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             Toast.makeText(
                 applicationContext,
-                R.string.empty_not_saved,
+                R.string.error_not_saved,
                 Toast.LENGTH_LONG
             ).show()
         }
@@ -195,6 +236,34 @@ class MainActivity : AppCompatActivity() {
             with(NotificationManagerCompat.from(context)) {
                 // notificationId is a unique int for each notification that you must define
                 notify(1, builder.build())
+            }
+        }
+    }
+
+    class BootBroadcastReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            if (intent.action == Intent.ACTION_BOOT_COMPLETED) { // Do your work related to alarm manager
+
+                val sharedPref: SharedPreferences =
+                    context.getSharedPreferences("FIRENDA_PREFERENCES", 0)
+                val editor = sharedPref.edit()
+                editor.putBoolean("FIRENDA_BOOT", true)
+                editor.apply()
+                Log.e("BOOT", "Set boot flag!")
+
+
+                val CHANNEL_ID = "NOTIFICATIONS_FIRENDA"
+                var builder = NotificationCompat.Builder(context!!, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.ic_favorite_black_24dp)
+                    .setContentTitle("Firenda")
+                    .setContentText("Firenda needs your attention!")
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+                with(NotificationManagerCompat.from(context)) {
+                    // notificationId is a unique int for each notification that you must define
+                    notify(1, builder.build())
+                }
+
             }
         }
     }

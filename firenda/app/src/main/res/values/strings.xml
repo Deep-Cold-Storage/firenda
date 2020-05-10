@@ -1,13 +1,14 @@
 <resources>
     <string name="app_name">Firenda</string>
 
-    <string name="hint_word">Medicine Name...</string>
-    <string name="button_save">Save</string>
-    <string name="empty_not_saved">Medicine not saved\!</string>
-
-    <string-array name="units_array">
+    <string name="hint_medicine_name">Medicine name...</string>
+    <string name="hint_medicine_dosage">Dosage...</string>
+    <string-array name="dosage_units">
         <item>Pills</item>
         <item>Mg</item>
         <item>Spoons</item>
     </string-array>
+
+    <string name="button_create">Create</string>
+    <string name="error_not_saved">Medicine not saved!</string>
 </resources>

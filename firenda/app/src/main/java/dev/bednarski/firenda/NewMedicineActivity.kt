@@ -15,36 +15,35 @@ class NewMedicineActivity : AppCompatActivity() {
 
         val editName = findViewById<EditText>(R.id.edit_name)
         val editDosage = findViewById<EditText>(R.id.edit_dosage)
-        val dosageSpinner = findViewById<Spinner>(R.id.dosageSpinner)
+        val spinnerDosage = findViewById<Spinner>(R.id.spinner_dosage)
 
-        val timePicker = findViewById<TimePicker>(R.id.time_picker)
+        val pickerTime = findViewById<TimePicker>(R.id.picker_time)
+        val buttonCreate = findViewById<Button>(R.id.button_create)
 
-        val button = findViewById<Button>(R.id.button_save)
-
-        // Create an ArrayAdapter using the string array and a default spinner layout
+        // Create an ArrayAdapter using the string array and a default spinner layout.
         ArrayAdapter.createFromResource(
             this,
-            R.array.units_array,
+            R.array.dosage_units,
             android.R.layout.simple_spinner_item
         ).also { adapter ->
-            // Specify the layout to use when the list of choices appears
+            // Specify the layout to use when the list of choices appears.
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Apply the adapter to the spinner
-            dosageSpinner.adapter = adapter
+            // Apply the adapter to the spinner.
+            spinnerDosage.adapter = adapter
         }
 
-        button.setOnClickListener {
+        buttonCreate.setOnClickListener {
             val replyIntent = Intent()
 
-            if (TextUtils.isEmpty(editName.text)) {
+            if (TextUtils.isEmpty(editName.text) || TextUtils.isEmpty(editDosage.text)) {
                 setResult(Activity.RESULT_CANCELED, replyIntent)
             } else {
                 val name = editName.text.toString()
                 val dosage = editDosage.text.toString()
-                val dosageUnit = dosageSpinner.getSelectedItem().toString()
+                val dosageUnit = spinnerDosage.getSelectedItem().toString()
 
-                val timeHour = timePicker.hour.toString()
-                val timeMinute = timePicker.minute.toString()
+                val timeHour = pickerTime.hour.toString()
+                val timeMinute = pickerTime.minute.toString()
 
                 replyIntent.putExtra("MEDICINE_NAME", name)
                 replyIntent.putExtra("MEDICINE_DOSAGE", dosage)
