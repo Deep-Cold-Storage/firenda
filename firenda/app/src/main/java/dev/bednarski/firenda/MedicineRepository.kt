@@ -21,6 +21,10 @@ class MedicineRepository(private val MedicineDao: MedicineDao) {
         MedicineDao.toggleMedicineById(id)
     }
 
+    suspend fun reset() {
+        MedicineDao.resetAllMedicines()
+    }
+
     suspend fun delete(position: Int) {
         MedicineDao.deleteMedicineById(position)
     }

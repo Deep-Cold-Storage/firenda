@@ -38,6 +38,10 @@ class MedicineViewModel(application: Application) : AndroidViewModel(application
         repository.toggle(id)
     }
 
+    fun reset() = viewModelScope.launch(Dispatchers.IO) {
+        repository.reset()
+    }
+
     // Launching a new coroutine to insert the data in a non-blocking way
     fun delete(position: Int) = viewModelScope.launch(Dispatchers.IO) {
         repository.delete(position)

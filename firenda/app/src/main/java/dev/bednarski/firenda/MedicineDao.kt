@@ -24,6 +24,9 @@ interface MedicineDao {
     @Query("UPDATE medicines SET takenToday = NOT takenToday WHERE id = :id")
     suspend fun toggleMedicineById(id: Int)
 
+    @Query("UPDATE medicines SET takenToday = 0")
+    suspend fun resetAllMedicines()
+
     @Update()
     fun updateMedicine(medicine: Medicine)
 }

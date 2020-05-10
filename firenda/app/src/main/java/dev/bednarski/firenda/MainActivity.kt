@@ -4,6 +4,7 @@ import android.app.*
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -34,6 +36,18 @@ class MainActivity : AppCompatActivity() {
         context = this
 
         val medicineViewModel = ViewModelProvider(this).get(MedicineViewModel::class.java)
+
+        // Reset DB logic
+        val sharedPref: SharedPreferences = getSharedPreferences("FIRENDA_LAST_OPENED", 0)
+
+        val currentDate: String = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
+        if (sharedPref.getString("FIRENDA_LAST_OPENED", "0") != currentDate) {
+            val editor = sharedPref.edit()
+            editor.putString("FIRENDA_LAST_OPENED", currentDate)
+            editor.apply()
+
+            medicineViewModel.reset()
+        }
 
         val deleteOnClick: (Int) -> Unit = { id ->
             medicineViewModel.delete(id)
@@ -100,6 +114,7 @@ class MainActivity : AppCompatActivity() {
             notificationManager.createNotificationChannel(channel)
         }
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
