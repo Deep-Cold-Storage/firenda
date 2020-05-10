@@ -11,9 +11,9 @@ class Medicine(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "dosage") val dosage: String,
-    @ColumnInfo(name = "dosageUnit") val dosageUnit: String,
+    @ColumnInfo(name = "dosage_unit") val dosageUnit: String,
 
-    @ColumnInfo(name = "hour") val hour: String,
-    @ColumnInfo(name = "minute") val minute: String,
-    @ColumnInfo(name = "takenToday") val takenToday: Boolean
+    @ColumnInfo(name = "time_hour") val hour: String,
+    @ColumnInfo(name = "time_minute") val minute: String,
+    @ColumnInfo(name = "status") val status: Boolean
 )

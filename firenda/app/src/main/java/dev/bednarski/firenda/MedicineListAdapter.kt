@@ -43,7 +43,7 @@ class MedicineListAdapter internal constructor(
                 2,
                 '0'
             )}:${current.minute.padStart(2, '0')} today."
-        holder.medicineStatusButton.setChecked(current.takenToday)
+        holder.medicineStatusButton.setChecked(current.status)
 
 
         holder.medicineDeleteButton.setOnClickListener { deleteClickListener(current.id) }

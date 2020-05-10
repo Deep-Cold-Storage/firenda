@@ -12,5 +12,13 @@
     <string name="button_create">Create</string>
     <string name="button_delete">Delete</string>
 
+    <string name="msg_deleted">Success! Medicine deleted.</string>
+    <string name="msg_toggled">Success! Medicine status changed.</string>
+    <string name="msg_notification">Take your</string>
+    <string name="msg_notification_attention">Firenda needs your attention!</string>
+
+    <string name="hint_notification_title">Reminders</string>
+    <string name="hint_notification_description">All Firenda notifications.</string>
+
     <string name="error_not_saved">Medicine not saved!</string>
 </resources>

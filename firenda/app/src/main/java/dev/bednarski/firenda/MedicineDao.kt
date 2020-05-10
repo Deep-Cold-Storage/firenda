@@ -9,7 +9,7 @@ import androidx.room.Update
 @Dao
 interface MedicineDao {
 
-    @Query("SELECT * FROM medicines ORDER BY hour")
+    @Query("SELECT * FROM medicines ORDER BY time_hour")
     fun getAllMedicines(): LiveData<List<Medicine>>
 
     @Query("SELECT * FROM medicines WHERE id = :id")
@@ -21,10 +21,10 @@ interface MedicineDao {
     @Query("DELETE FROM medicines WHERE id = :id")
     suspend fun deleteMedicineById(id: Int)
 
-    @Query("UPDATE medicines SET takenToday = NOT takenToday WHERE id = :id")
+    @Query("UPDATE medicines SET status = NOT status WHERE id = :id")
     suspend fun toggleMedicineById(id: Int)
 
-    @Query("UPDATE medicines SET takenToday = 0")
+    @Query("UPDATE medicines SET status = 0")
     suspend fun resetAllMedicines()
 
     @Update()

@@ -5,10 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = arrayOf(Medicine::class), version = 1, exportSchema = false)
-public abstract class AppDatabase : RoomDatabase() {
+@Database(entities = [Medicine::class], version = 1, exportSchema = false)
+abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun MedicineDao(): MedicineDao
+    abstract fun medicineDao(): MedicineDao
 
     companion object {
         // Singleton prevents multiple instances of database opening at the same time.

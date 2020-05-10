@@ -18,7 +18,7 @@ class MedicineViewModel(application: Application) : AndroidViewModel(application
     val allMedicines: LiveData<List<Medicine>>
 
     init {
-        val medicinesDao = AppDatabase.getDatabase(application).MedicineDao()
+        val medicinesDao = AppDatabase.getDatabase(application).medicineDao()
         repository = MedicineRepository(medicinesDao)
         allMedicines = repository.allMedicines
     }
