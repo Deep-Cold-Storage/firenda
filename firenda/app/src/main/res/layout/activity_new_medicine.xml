@@ -23,15 +23,26 @@
 
     <EditText
         android:id="@+id/edit_dosage"
-        android:layout_width="361dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_width="200dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="36dp"
         android:fontFamily="sans-serif-light"
         android:hint="Dosage..."
         android:inputType="numberSigned|numberDecimal"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_name" />
+
+    <Spinner
+        android:id="@+id/dosageSpinner"
+        android:layout_width="159dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintStart_toEndOf="@+id/edit_dosage"
         app:layout_constraintTop_toBottomOf="@+id/edit_name" />
 
     <TimePicker

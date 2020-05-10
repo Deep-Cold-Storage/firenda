@@ -9,12 +9,12 @@ class MedicineRepository(private val MedicineDao: MedicineDao) {
     // Observed LiveData will notify the observer when the data has changed.
     val allMedicines: LiveData<List<Medicine>> = MedicineDao.getAllMedicines()
 
-    suspend fun get(id: Int) {
+    fun get(id: Int) {
         MedicineDao.getMedicineById(id)
     }
 
-    suspend fun insert(medicine: Medicine) {
-        MedicineDao.insertMedicine(medicine)
+    fun insert(medicine: Medicine): Long {
+        return MedicineDao.insertMedicine(medicine)
     }
 
     suspend fun toggle(id: Int) {

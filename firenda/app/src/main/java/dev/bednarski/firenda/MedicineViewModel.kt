@@ -23,9 +23,9 @@ class MedicineViewModel(application: Application) : AndroidViewModel(application
         allMedicines = repository.allMedicines
     }
 
-    // Launching a new coroutine to insert the data in a non-blocking way
-    fun insert(medicine: Medicine) = viewModelScope.launch(Dispatchers.IO) {
-        repository.insert(medicine)
+    // Insert the data in a blocking way
+    fun insert(medicine: Medicine): Long {
+        return repository.insert(medicine)
     }
 
     // Launching a new coroutine to get the data in a non-blocking way

@@ -4,4 +4,10 @@
     <string name="hint_word">Medicine Name...</string>
     <string name="button_save">Save</string>
     <string name="empty_not_saved">Medicine not saved\!</string>
+
+    <string-array name="units_array">
+        <item>Pills</item>
+        <item>Mg</item>
+        <item>Spoons</item>
+    </string-array>
 </resources>

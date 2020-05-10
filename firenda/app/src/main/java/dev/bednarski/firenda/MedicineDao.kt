@@ -13,10 +13,10 @@ interface MedicineDao {
     fun getAllMedicines(): LiveData<List<Medicine>>
 
     @Query("SELECT * FROM medicines WHERE id = :id")
-    fun getMedicineById(id: Int): LiveData<List<Medicine>>
+    fun getMedicineById(id: Int): LiveData<Medicine>
 
     @Insert()
-    fun insertMedicine(medicine: Medicine)
+    fun insertMedicine(medicine: Medicine): Long
 
     @Query("DELETE FROM medicines WHERE id = :id")
     suspend fun deleteMedicineById(id: Int)
