@@ -228,7 +228,7 @@ class MainActivity : AppCompatActivity() {
             val dosageUnit = intent!!.getStringExtra("NOTIFICATION_MEDICINE_UNIT")
 
             var builder = NotificationCompat.Builder(context!!, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_favorite_black_24dp)
+                .setSmallIcon(R.drawable.ic_favorite_24dp)
                 .setContentTitle("Firenda")
                 .setContentText("Take your " + name + " " + dosageUnit + "!")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -254,7 +254,7 @@ class MainActivity : AppCompatActivity() {
 
                 val CHANNEL_ID = "NOTIFICATIONS_FIRENDA"
                 var builder = NotificationCompat.Builder(context!!, CHANNEL_ID)
-                    .setSmallIcon(R.drawable.ic_favorite_black_24dp)
+                    .setSmallIcon(R.drawable.ic_favorite_24dp)
                     .setContentTitle("Firenda")
                     .setContentText("Firenda needs your attention!")
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)

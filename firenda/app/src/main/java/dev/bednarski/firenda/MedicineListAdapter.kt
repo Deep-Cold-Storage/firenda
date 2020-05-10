@@ -23,12 +23,11 @@ class MedicineListAdapter internal constructor(
 
 
     inner class MedicineViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val medicineItemName: TextView = itemView.findViewById(R.id.textName)
-        val medicineItemDosage: TextView = itemView.findViewById(R.id.textDosage)
-        val medicineItemTime: TextView = itemView.findViewById(R.id.textTime)
+        val medicineItemName: TextView = itemView.findViewById(R.id.text_name)
+        val medicineItemHint: TextView = itemView.findViewById(R.id.text_hint)
 
-        val medicineDeleteButton: Button = itemView.findViewById(R.id.buttonDelete)
-        val medicineStatusButton: ToggleButton = itemView.findViewById(R.id.buttonToggleStatus)
+        val medicineDeleteButton: Button = itemView.findViewById(R.id.button_delete)
+        val medicineStatusButton: ToggleButton = itemView.findViewById(R.id.button_toggle)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MedicineViewHolder {
@@ -39,8 +38,11 @@ class MedicineListAdapter internal constructor(
     override fun onBindViewHolder(holder: MedicineViewHolder, position: Int) {
         val current = medicines[position]
         holder.medicineItemName.text = current.name
-        holder.medicineItemTime.text = "Every day at " + current.hour + ":" + current.minute
-        holder.medicineItemDosage.text = "Dosage: " + current.dosage
+        holder.medicineItemHint.text =
+            "Take ${current.dosage} ${current.dosageUnit.toLowerCase()} at ${current.hour.padStart(
+                2,
+                '0'
+            )}:${current.minute.padStart(2, '0')} today."
         holder.medicineStatusButton.setChecked(current.takenToday)
 
 

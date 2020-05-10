@@ -10,5 +10,7 @@
     </string-array>
 
     <string name="button_create">Create</string>
+    <string name="button_delete">Delete</string>
+
     <string name="error_not_saved">Medicine not saved!</string>
 </resources>
