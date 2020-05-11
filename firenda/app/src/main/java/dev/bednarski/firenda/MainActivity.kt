@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Save MainActivity context for later.
         context = this
         alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         sharedPref = getSharedPreferences(SHARED_PREFERENCES, 0)
@@ -146,7 +145,7 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 NOTIFICATION_CHANNEL_ID,
-                R.string.hint_notification_title.toString(),
+                getString(R.string.hint_notification_title),
                 NotificationManager.IMPORTANCE_HIGH
             ).apply {
                 description = R.string.hint_notification_description.toString()
@@ -211,7 +210,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             Snackbar.make(
                 findViewById(R.id.main_layout),
-                R.string.error_not_saved,
+                getString(R.string.error_not_saved),
                 Snackbar.LENGTH_LONG
             ).show()
         }
