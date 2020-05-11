@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -38,6 +40,10 @@ class MainActivity : AppCompatActivity() {
         resetMedicineStatus()
         createNotificationChannel()
 
+        GlobalScope.launch {
+            fixNotifications()
+        }
+
         // RecycleView item on delete callback.
         val deleteOnClick: (Int) -> Unit = { id ->
             medicineViewModel.delete(id)
@@ -48,7 +54,7 @@ class MainActivity : AppCompatActivity() {
             ).show()
 
             // Cancel reacquiring notification for deleted medicine.
-            val intent = Intent(this, Receiver::class.java)
+            val intent = Intent(this, NotificationReceiver::class.java)
             val pendingIntent: PendingIntent = PendingIntent.getBroadcast(
                 this,
                 id,
@@ -83,41 +89,6 @@ class MainActivity : AppCompatActivity() {
 
             // Update the cached copy of the words in the adapter.
             medicines?.let { adapter.setMedicines(it) }
-
-            // Reschedule alarms after reboot.
-            if (sharedPref.getBoolean("IS_REBOOT", false)) {
-
-                val editor = sharedPref.edit()
-                editor.putBoolean("IS_REBOOT", false)
-                editor.apply()
-
-
-                for (medicine in medicines) {
-
-                    val intent = Intent(this, Receiver::class.java)
-                    intent.putExtra("NOTIFICATION_MEDICINE_NAME", medicine.name)
-                    intent.putExtra("NOTIFICATION_MEDICINE_UNIT", medicine.dosageUnit)
-
-                    val pendingIntent = PendingIntent.getBroadcast(
-                        this,
-                        medicine.id.toInt(),
-                        intent,
-                        PendingIntent.FLAG_CANCEL_CURRENT
-                    )
-
-                    val calendar: Calendar = Calendar.getInstance()
-
-                    calendar.set(Calendar.HOUR_OF_DAY, medicine.hour.toInt());
-                    calendar.set(Calendar.MINUTE, medicine.minute.toInt());
-
-                    alarmManager.setRepeating(
-                        AlarmManager.RTC_WAKEUP,
-                        calendar.timeInMillis,
-                        AlarmManager.INTERVAL_DAY,
-                        pendingIntent
-                    )
-                }
-            }
         })
 
         // Setup floating button action.
@@ -158,6 +129,48 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private suspend fun fixNotifications() {
+        val medicinesDao = AppDatabase.getDatabase(context!!).medicineDao()
+        val repository: MedicineRepository = MedicineRepository(medicinesDao)
+        val medicines = repository.getMedicines()
+
+        for (medicine in medicines) {
+
+            val intent = Intent(context, NotificationReceiver::class.java)
+            intent.putExtra("NOTIFICATION_MEDICINE_NAME", medicine.name)
+            intent.putExtra("NOTIFICATION_MEDICINE_UNIT", medicine.dosageUnit)
+
+            val pendingIntent = PendingIntent.getBroadcast(
+                context,
+                medicine.id.toInt(),
+                intent,
+                PendingIntent.FLAG_CANCEL_CURRENT
+            )
+
+            val now: Calendar = Calendar.getInstance()
+            val calendar: Calendar = Calendar.getInstance()
+
+            calendar.set(Calendar.HOUR_OF_DAY, medicine.hour.toInt());
+            calendar.set(Calendar.MINUTE, medicine.minute.toInt());
+            calendar.set(Calendar.SECOND, 0);
+
+            val alarm: Long
+
+            if (calendar.getTimeInMillis() <= now.getTimeInMillis())
+                alarm = calendar.getTimeInMillis() + (AlarmManager.INTERVAL_DAY + 1);
+            else
+                alarm = calendar.getTimeInMillis();
+
+            val alarmManager = context!!.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+            alarmManager.setRepeating(
+                AlarmManager.RTC_WAKEUP,
+                alarm,
+                AlarmManager.INTERVAL_DAY,
+                pendingIntent
+            )
+        }
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         super.onActivityResult(requestCode, resultCode, intent)
@@ -184,7 +197,7 @@ class MainActivity : AppCompatActivity() {
             val id = medicineViewModel.insert(medicine)
 
             // Set up notification
-            val intent = Intent(this, Receiver::class.java)
+            val intent = Intent(this, NotificationReceiver::class.java)
             intent.putExtra("NOTIFICATION_MEDICINE_NAME", name)
             intent.putExtra("NOTIFICATION_MEDICINE_UNIT", dosageUnit)
 
@@ -199,6 +212,7 @@ class MainActivity : AppCompatActivity() {
 
             calendar.set(Calendar.HOUR_OF_DAY, timeHour.toInt());
             calendar.set(Calendar.MINUTE, timeMinute.toInt());
+            calendar.set(Calendar.SECOND, 0);
 
             alarmManager.setRepeating(
                 AlarmManager.RTC_WAKEUP,

@@ -12,6 +12,9 @@ interface MedicineDao {
     @Query("SELECT * FROM medicines ORDER BY time_hour")
     fun getAllMedicines(): LiveData<List<Medicine>>
 
+    @Query("SELECT * FROM medicines ORDER BY time_hour")
+    fun getMedicines(): List<Medicine>
+
     @Query("SELECT * FROM medicines WHERE id = :id")
     fun getMedicineById(id: Int): LiveData<Medicine>
 

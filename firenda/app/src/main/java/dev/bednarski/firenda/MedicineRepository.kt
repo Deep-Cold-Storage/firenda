@@ -13,6 +13,10 @@ class MedicineRepository(private val MedicineDao: MedicineDao) {
         MedicineDao.getMedicineById(id)
     }
 
+    fun getMedicines(): List<Medicine> {
+        return MedicineDao.getMedicines()
+    }
+
     fun insert(medicine: Medicine): Long {
         return MedicineDao.insertMedicine(medicine)
     }
