@@ -20,13 +20,13 @@ import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
-    lateinit var context: Context
-    lateinit var alarmManager: AlarmManager
-    lateinit var sharedPref: SharedPreferences
-    lateinit var medicineViewModel: MedicineViewModel
+    private lateinit var context: Context
+    private lateinit var alarmManager: AlarmManager
+    private lateinit var sharedPref: SharedPreferences
+    private lateinit var medicineViewModel: MedicineViewModel
 
-    val NOTIFICATION_CHANNEL_ID = "dev.bednarski.firenda.NOTIFICATIONS"
-    val SHARED_PREFERENCES = "dev.bednarski.firenda.PREFERENCES"
+    private val NOTIFICATION_CHANNEL_ID = "dev.bednarski.firenda.NOTIFICATIONS"
+    private val SHARED_PREFERENCES = "dev.bednarski.firenda.PREFERENCES"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

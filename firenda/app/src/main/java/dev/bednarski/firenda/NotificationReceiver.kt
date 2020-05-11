@@ -9,7 +9,7 @@ import androidx.core.app.NotificationManagerCompat
 
 
 class NotificationReceiver : BroadcastReceiver() {
-    val CHANNEL_ID = "dev.bednarski.firenda.NOTIFICATIONS"
+    private val NOTIFICATION_CHANNEL_ID = "dev.bednarski.firenda.NOTIFICATIONS"
 
     override fun onReceive(context: Context?, intent: Intent?) {
         val name = intent!!.getStringExtra("NOTIFICATION_MEDICINE_NAME")
@@ -22,7 +22,7 @@ class NotificationReceiver : BroadcastReceiver() {
             PendingIntent.FLAG_UPDATE_CURRENT
         )
 
-        val builder = NotificationCompat.Builder(context!!, CHANNEL_ID)
+        val builder = NotificationCompat.Builder(context!!, NOTIFICATION_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_favorite_24dp)
             .setContentTitle("Firenda")
             .setContentText(context.getString(R.string.msg_notification) + " " + name + " " + dosageUnit.toLowerCase() + "!")
