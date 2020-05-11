@@ -3,21 +3,16 @@ package dev.bednarski.firenda
 import androidx.lifecycle.LiveData
 
 
-// Declares the DAO as a private property in the constructor.
 class MedicineRepository(private val MedicineDao: MedicineDao) {
 
     // Observed LiveData will notify the observer when the data has changed.
-    val allMedicines: LiveData<List<Medicine>> = MedicineDao.getAllMedicines()
+    val allMedicines: LiveData<List<Medicine>> = MedicineDao.getLiveMedicines()
 
-    fun get(id: Int) {
+    suspend fun get(id: Int) {
         MedicineDao.getMedicineById(id)
     }
 
-    fun getMedicines(): List<Medicine> {
-        return MedicineDao.getMedicines()
-    }
-
-    fun insert(medicine: Medicine): Long {
+    suspend fun insert(medicine: Medicine): Long {
         return MedicineDao.insertMedicine(medicine)
     }
 

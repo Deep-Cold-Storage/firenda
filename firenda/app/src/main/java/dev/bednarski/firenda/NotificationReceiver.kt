@@ -9,20 +9,20 @@ import androidx.core.app.NotificationManagerCompat
 
 
 class NotificationReceiver : BroadcastReceiver() {
-    val NOTIFICATION_CHANNEL_ID = "dev.bednarski.firenda.NOTIFICATIONS"
+    val CHANNEL_ID = "dev.bednarski.firenda.NOTIFICATIONS"
 
     override fun onReceive(context: Context?, intent: Intent?) {
         val name = intent!!.getStringExtra("NOTIFICATION_MEDICINE_NAME")
-        val dosageUnit = intent!!.getStringExtra("NOTIFICATION_MEDICINE_UNIT")
+        val dosageUnit = intent.getStringExtra("NOTIFICATION_MEDICINE_UNIT")
 
+        // Create MainActivity intent for notification.
         val intent = Intent(context, MainActivity::class.java)
-
         val pIntent = PendingIntent.getActivity(
             context, 1000, intent,
             PendingIntent.FLAG_UPDATE_CURRENT
         )
 
-        var builder = NotificationCompat.Builder(context!!, NOTIFICATION_CHANNEL_ID)
+        val builder = NotificationCompat.Builder(context!!, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_favorite_24dp)
             .setContentTitle("Firenda")
             .setContentText(context.getString(R.string.msg_notification) + " " + name + " " + dosageUnit.toLowerCase() + "!")

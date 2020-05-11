@@ -22,12 +22,13 @@ abstract class AppDatabase : RoomDatabase() {
             if (tempInstance != null) {
                 return tempInstance
             }
+
             synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
                     "database"
-                ).allowMainThreadQueries().build()
+                ).build()
                 INSTANCE = instance
                 return instance
             }

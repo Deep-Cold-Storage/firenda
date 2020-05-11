@@ -15,10 +15,9 @@ class MedicineListAdapter internal constructor(
     private val deleteClickListener: (Int) -> Unit,
     private val toggleClickListener: (Int) -> Unit
 ) : RecyclerView.Adapter<MedicineListAdapter.MedicineViewHolder>() {
-
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
-    // Cached copy of medicines.
+    // Cached copy of all Medicines.
     private var medicines = emptyList<Medicine>()
 
 
@@ -37,6 +36,7 @@ class MedicineListAdapter internal constructor(
 
     override fun onBindViewHolder(holder: MedicineViewHolder, position: Int) {
         val current = medicines[position]
+
         holder.medicineItemName.text = current.name
         holder.medicineItemHint.text =
             "Take ${current.dosage} ${current.dosageUnit.toLowerCase()} at ${current.hour.padStart(
@@ -45,10 +45,8 @@ class MedicineListAdapter internal constructor(
             )}:${current.minute.padStart(2, '0')} today."
         holder.medicineStatusButton.setChecked(current.status)
 
-
         holder.medicineDeleteButton.setOnClickListener { deleteClickListener(current.id) }
         holder.medicineStatusButton.setOnClickListener { toggleClickListener(current.id) }
-
     }
 
     internal fun setMedicines(medicines: List<Medicine>) {

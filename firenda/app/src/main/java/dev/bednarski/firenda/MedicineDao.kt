@@ -4,22 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.Update
 
 @Dao
 interface MedicineDao {
+    @Insert()
+    suspend fun insertMedicine(medicine: Medicine): Long
 
     @Query("SELECT * FROM medicines ORDER BY time_hour")
-    fun getAllMedicines(): LiveData<List<Medicine>>
+    fun getLiveMedicines(): LiveData<List<Medicine>>
 
     @Query("SELECT * FROM medicines ORDER BY time_hour")
-    fun getMedicines(): List<Medicine>
+    suspend fun getAllMedicines(): List<Medicine>
 
     @Query("SELECT * FROM medicines WHERE id = :id")
-    fun getMedicineById(id: Int): LiveData<Medicine>
-
-    @Insert()
-    fun insertMedicine(medicine: Medicine): Long
+    suspend fun getMedicineById(id: Int): Medicine
 
     @Query("DELETE FROM medicines WHERE id = :id")
     suspend fun deleteMedicineById(id: Int)
@@ -30,6 +28,4 @@ interface MedicineDao {
     @Query("UPDATE medicines SET status = 0")
     suspend fun resetAllMedicines()
 
-    @Update()
-    fun updateMedicine(medicine: Medicine)
 }
